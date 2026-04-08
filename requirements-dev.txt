@@ -1,2 +1,5 @@
 -r requirements.txt
 djangorestframework-stubs
+pytest
+pytest-django
+pytest-sugar
