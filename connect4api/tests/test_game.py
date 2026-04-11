@@ -1,31 +1,5 @@
+from connect4api.tests.boards import *
 from connect4api.game import Board
-
-EMPTY_BOARD = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-]
-
-FULL_BOARD = [
-    [1, 2, 1, 2, 1, 2, 1],
-    [1, 2, 1, 2, 1, 2, 1],
-    [1, 2, 1, 2, 1, 2, 1],
-    [1, 2, 1, 2, 1, 2, 1],
-    [1, 2, 1, 2, 1, 2, 1],
-    [1, 2, 1, 2, 1, 2, 1],
-]
-
-BOARD_1_FULL_COLUMN = [
-    [0, 1, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0],
-    [0, 2, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0],
-    [0, 2, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0],
-]
 
 
 class TestGetValidColumns:
@@ -34,7 +8,7 @@ class TestGetValidColumns:
         assert board.get_valid_columns() == [0, 1, 2, 3, 4, 5, 6]
 
     def test_full_board(self):
-        board = Board(FULL_BOARD)
+        board = Board(FULL_BOARD_WITHOUT_WINNER)
         assert board.get_valid_columns() == []
 
     def test_partial_board(self):
@@ -48,7 +22,7 @@ class TestGetNextOpenRow:
         assert board.get_next_open_row(0) == 5
 
     def test_full_column(self):
-        board = Board(FULL_BOARD)
+        board = Board(FULL_BOARD_WITHOUT_WINNER)
         assert board.get_next_open_row(0) is None
 
     def test_partial_column(self):
@@ -131,7 +105,7 @@ class TestGetAiMove:
         assert move in board.get_valid_columns()
 
     def test_returns_none_on_full_board(self):
-        board = Board(FULL_BOARD)
+        board = Board(FULL_BOARD_WITHOUT_WINNER)
         assert board.get_ai_move() is None
 
     def test_returns_only_available_column(self):
