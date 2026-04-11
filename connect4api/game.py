@@ -62,6 +62,17 @@ class Board:
 
         return False
 
+    def current_player(self) -> int:
+        flat = [cell for row in self.grid for cell in row]
+        return 1 if flat.count(1) == flat.count(2) else 2
+
+    def drop_piece(self, col: int) -> None:
+        """
+        Place a piece for the current player in the given column.
+        """
+        row = self.get_next_open_row(col)
+        self.grid[row][col] = self.current_player()
+
     def get_ai_move(self) -> int | None:
         """
         Return a random valid column for the AI to play.
