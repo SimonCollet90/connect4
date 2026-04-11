@@ -98,6 +98,53 @@ class TestCheckWinner:
         assert board.check_winner(2) is True
 
 
+class TestCurrentPlayer:
+    def test_player1_starts(self):
+        board = Board(EMPTY_BOARD)
+        assert board.current_player() == 1
+
+    def test_player2_after_first_move(self):
+        board = Board([
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0, 0, 0],
+        ])
+        assert board.current_player() == 2
+
+    def test_player1_after_two_moves(self):
+        board = Board([
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [1, 2, 0, 0, 0, 0, 0],
+        ])
+        assert board.current_player() == 1
+
+
+class TestDropPiece:
+    def test_piece_lands_at_bottom_of_empty_column(self):
+        board = Board(EMPTY_BOARD)
+        board.drop_piece(0)
+        assert board.grid[5][0] == 1
+
+    def test_piece_lands_on_top_of_existing_pieces(self):
+        board = Board([
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0, 0, 0],
+            [2, 0, 0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0, 0, 0],
+        ])
+        board.drop_piece(0)
+        assert board.grid[2][0] == 2
+
+
 class TestGetAiMove:
     def test_returns_valid_column(self):
         board = Board(BOARD_1_FULL_COLUMN)
