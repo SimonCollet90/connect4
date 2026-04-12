@@ -12,6 +12,21 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Development
+
+Install dev dependencies and set up the pre-push hook to run tests automatically before each push:
+
+```bash
+pip install -r requirements-dev.txt
+pre-commit install --hook-type pre-push
+```
+
+To run the tests manually:
+
+```bash
+pytest
+```
+
 ## Endpoints
 
 ### `POST /api/next_move/`
