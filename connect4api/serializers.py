@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from typing import List
 
 ROWS = 6
 COLS = 7
@@ -13,13 +12,13 @@ class BoardSerializer(serializers.Serializer):
         child=serializers.ListField(
             child=serializers.IntegerField(),
             min_length=COLS,
-            max_length=COLS
+            max_length=COLS,
         ),
         min_length=ROWS,
-        max_length=ROWS
+        max_length=ROWS,
     )
 
-    def validate_board(self, board: List[List[int]]) -> List[List[int]]:
+    def validate_board(self, board: list[list[int]]) -> list[list[int]]:
         for row in board:
             for cell in row:
                 if cell not in self.VALID_VALUES:
@@ -32,7 +31,7 @@ class BoardSerializer(serializers.Serializer):
         return board
 
     @staticmethod
-    def _validate_gravity(board: List[List[int]]) -> None:
+    def _validate_gravity(board: list[list[int]]) -> None:
         for col in range(COLS):
             found_disc = False
             for row in range(ROWS):
@@ -46,7 +45,7 @@ class BoardSerializer(serializers.Serializer):
                     )
 
     @staticmethod
-    def _validate_piece_count(board: List[List[int]]) -> None:
+    def _validate_piece_count(board: list[list[int]]) -> None:
         flat = [cell for row in board for cell in row]
         count1 = flat.count(1)
         count2 = flat.count(2)
