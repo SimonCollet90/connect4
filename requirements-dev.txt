@@ -4,3 +4,4 @@ pre-commit
 pytest
 pytest-django
 pytest-sugar
+ruff
