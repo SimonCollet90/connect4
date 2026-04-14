@@ -1,11 +1,11 @@
-name: Tests
+name: CI
 
 on:
   push:
   pull_request:
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +20,12 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Check formatting
+        run: ruff format --check .
 
       - name: Run tests
         run: pytest
