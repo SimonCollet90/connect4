@@ -28,7 +28,7 @@ jobs:
         run: ruff check .
 
       - name: Type check
-        run: mypy .
+        run: mypy . --show-traceback
 
       - name: Run tests
         run: pytest
