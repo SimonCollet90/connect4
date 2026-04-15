@@ -4,7 +4,7 @@ ROWS = 6
 COLS = 7
 
 
-class BoardSerializer(serializers.Serializer):
+class BoardSerializer(serializers.Serializer[dict[str, list[list[int]]]]):
     VALID_VALUES = {0, 1, 2}
 
     # Board is represented by a list of rows, starting from the top row.

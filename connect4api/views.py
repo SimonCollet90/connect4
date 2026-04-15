@@ -1,3 +1,4 @@
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -6,7 +7,7 @@ from connect4api.serializers import BoardSerializer
 
 
 class NextMoveView(APIView):
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         serializer = BoardSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)

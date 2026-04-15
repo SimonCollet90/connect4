@@ -8,6 +8,10 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DEBUG: "False"
+
     steps:
       - uses: actions/checkout@v6
 
@@ -21,14 +25,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
-      - name: Lint
-        run: ruff check .
-
       - name: Check formatting
         run: ruff format --check .
 
+      - name: Lint
+        run: ruff check .
+
+      - name: Type check
+        run: mypy . --show-traceback
+
       - name: Run tests
         run: pytest
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DEBUG: "False"
