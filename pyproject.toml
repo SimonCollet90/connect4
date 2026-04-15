@@ -1,10 +1,10 @@
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings"
-
+# Formatting
 [tool.ruff]
 line-length = 88
 target-version = "py314"
 
+
+# Linting
 [tool.ruff.lint]
 select = [
     "E",   # pycodestyle errors
@@ -17,3 +17,45 @@ select = [
 
 [tool.ruff.lint.isort]
 known-third-party = ["rest_framework", "django"]
+
+
+# Type-checks
+[tool.mypy]
+python_version = "3.14"
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+exclude = "venv/"
+
+# Error if a function has no type annotations
+disallow_untyped_defs = true
+# Error if an unannotated function body contains type inconsistencies
+check_untyped_defs = true
+# Error if an annotated return value implicitly contains Any
+warn_return_any = true
+# No implicit Optional for arguments with a None default value
+no_implicit_optional = true
+# Warn on redundant casts
+warn_redundant_casts = true
+
+# mypy plugin configuration for Django
+[tool.django-stubs]
+django_settings_module = "config.settings"
+
+# game.py: pure Python logic — enable full strict mode
+[[tool.mypy.overrides]]
+module = "connect4api.game"
+strict = true
+
+# Django boilerplate: config, migrations — no value in type-checking these
+[[tool.mypy.overrides]]
+module = ["config.*", "manage", "connect4api.migrations.*"]
+ignore_errors = true
+
+# Tests: relax annotations, focus is on correctness not typing
+[[tool.mypy.overrides]]
+module = "connect4api.tests.*"
+disallow_untyped_defs = false
+
+
+# Tests
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"

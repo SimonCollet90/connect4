@@ -21,11 +21,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
+      - name: Check formatting
+        run: ruff format --check .
+
       - name: Lint
         run: ruff check .
 
-      - name: Check formatting
-        run: ruff format --check .
+      - name: Type check
+        run: mypy .
 
       - name: Run tests
         run: pytest
