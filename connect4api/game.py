@@ -66,12 +66,16 @@ class Board:
         flat = [cell for row in self.grid for cell in row]
         return 1 if flat.count(1) == flat.count(2) else 2
 
-    def drop_piece(self, col: int) -> None:
+    def drop_piece(self, col: int) -> bool:
         """
         Place a piece for the current player in the given column.
+        Returns True if the operation was successful, False otherwise.
         """
         row = self.get_next_open_row(col)
+        if row is None:
+            return False
         self.grid[row][col] = self.current_player()
+        return True
 
     def get_ai_move(self) -> int | None:
         """
