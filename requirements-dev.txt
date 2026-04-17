@@ -4,6 +4,7 @@ djangorestframework-stubs==3.16.9
 mypy==1.20.1
 pre-commit
 pytest
+pytest-cov
 pytest-django
 pytest-sugar
 ruff

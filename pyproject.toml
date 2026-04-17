@@ -59,3 +59,18 @@ disallow_untyped_defs = false
 # Tests
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
+addopts = "--cov --cov-report=term-missing --cov-report=xml --cov-report=html"
+
+
+# Coverage
+[tool.coverage.run]
+source = ["connect4api"]
+omit = ["connect4api/migrations/*", "connect4api/tests/*"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
+
+[tool.coverage.xml]
+output = "coverage.xml"
