@@ -1,5 +1,7 @@
 # connect4
 
+[![codecov](https://codecov.io/github/SimonCollet90/connect4/graph/badge.svg?token=CLGC6FWP6T)](https://codecov.io/github/SimonCollet90/connect4)
+
 REST API for playing Connect 4 against a computer.
 
 ## Installation
