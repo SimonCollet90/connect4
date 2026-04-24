@@ -23,7 +23,7 @@ class NextMoveView(APIView):
         if col is None:
             return Response({"status": "game_over", "winner": None})
 
-        player = board.current_player()  # get current player before the move
+        player = board.current_player  # get current player before the move
         board.drop_piece(col)
 
         if board.check_winner(player):  # check if it was a winning move

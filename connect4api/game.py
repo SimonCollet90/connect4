@@ -1,3 +1,4 @@
+import copy
 import random
 
 
@@ -10,16 +11,49 @@ class Board:
     """
 
     def __init__(self, grid: list[list[int]]) -> None:
-        self.grid = grid
+        self.grid = copy.deepcopy(grid)
         self.rows = len(grid)
         self.cols = len(grid[0]) if grid else 0
 
-    def get_valid_columns(self) -> list[int]:
+    @staticmethod
+    def cell_str(player: int) -> str:
+        if player == 1:
+            return "X"
+        elif player == 2:
+            return "O"
+        else:
+            return "."
+
+    def __str__(self) -> str:
+        return "\n".join(
+            ["".join([self.cell_str(cell) for cell in row]) for row in self.grid]
+        )
+
+    @property
+    def valid_columns(self) -> list[int]:
         """
         Return the list of columns that are not full.
         A column is valid if its top cell (row 0) is empty.
         """
         return [col for col in range(self.cols) if self.grid[0][col] == 0]
+
+    @property
+    def next_states(self) -> dict[int, Board]:
+        """
+        Return a dict mapping each valid column to the resulting Board after dropping a
+        piece there.
+        """
+        next_states = dict()
+        for col in self.valid_columns:
+            new_board = Board(self.grid)
+            new_board.drop_piece(col)
+            next_states[col] = new_board
+        return next_states
+
+    @property
+    def current_player(self) -> int:
+        flat = [cell for row in self.grid for cell in row]
+        return 2 if flat.count(1) > flat.count(2) else 1
 
     def get_next_open_row(self, col: int) -> int | None:
         """
@@ -62,10 +96,6 @@ class Board:
 
         return False
 
-    def current_player(self) -> int:
-        flat = [cell for row in self.grid for cell in row]
-        return 1 if flat.count(1) == flat.count(2) else 2
-
     def drop_piece(self, col: int) -> bool:
         """
         Place a piece for the current player in the given column.
@@ -74,15 +104,43 @@ class Board:
         row = self.get_next_open_row(col)
         if row is None:
             return False
-        self.grid[row][col] = self.current_player()
+        self.grid[row][col] = self.current_player
         return True
 
-    def get_ai_move(self) -> int | None:
+    def minimax(self, depth: int) -> tuple[float, list[int]]:
         """
-        Return a random valid column for the AI to play.
+        Return (score, best_columns) using negamax convention.
+        Score is from the perspective of the current player:
+        +1 = win,
+        -1 = loss,
+         0 = draw/unknown.
+        """
+        player = self.current_player
+        opponent = 3 - player
+        if self.check_winner(opponent):
+            return -1.0, []
+        next_states = self.next_states
+        if not next_states or depth == 0:
+            return 0.0, self.valid_columns
+
+        best_score = float("-inf")
+        best_cols: list[int] = []
+        for col, board in next_states.items():
+            score, _ = board.minimax(depth - 1)
+            score = -score
+            if score > best_score:
+                best_score, best_cols = score, [col]
+            elif score == best_score:
+                best_cols.append(col)
+
+        return best_score, best_cols
+
+    def get_ai_move(self, depth: int = 4) -> int | None:
+        """
+        Return the best column for the AI to play using minimax at the given depth.
         Returns None if no valid column is available (board is full).
         """
-        valid_columns = self.get_valid_columns()
-        if not valid_columns:
+        _, best_cols = self.minimax(depth)
+        if not best_cols:
             return None
-        return random.choice(valid_columns)
+        return random.choice(best_cols)
