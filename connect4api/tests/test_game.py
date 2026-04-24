@@ -9,15 +9,15 @@ from connect4api.tests.boards import (
 class TestGetValidColumns:
     def test_empty_board(self):
         board = Board(EMPTY_BOARD)
-        assert board.get_valid_columns() == [0, 1, 2, 3, 4, 5, 6]
+        assert board.valid_columns == [0, 1, 2, 3, 4, 5, 6]
 
     def test_full_board(self):
         board = Board(FULL_BOARD_WITHOUT_WINNER)
-        assert board.get_valid_columns() == []
+        assert board.valid_columns == []
 
     def test_partial_board(self):
         board = Board(BOARD_1_FULL_COLUMN)
-        assert board.get_valid_columns() == [0, 2, 3, 4, 5, 6]
+        assert board.valid_columns == [0, 2, 3, 4, 5, 6]
 
 
 class TestGetNextOpenRow:
@@ -117,7 +117,7 @@ class TestCheckWinner:
 class TestCurrentPlayer:
     def test_player1_starts(self):
         board = Board(EMPTY_BOARD)
-        assert board.current_player() == 1
+        assert board.current_player == 1
 
     def test_player2_after_first_move(self):
         board = Board(
@@ -130,7 +130,7 @@ class TestCurrentPlayer:
                 [1, 0, 0, 0, 0, 0, 0],
             ]
         )
-        assert board.current_player() == 2
+        assert board.current_player == 2
 
     def test_player1_after_two_moves(self):
         board = Board(
@@ -143,7 +143,7 @@ class TestCurrentPlayer:
                 [1, 2, 0, 0, 0, 0, 0],
             ]
         )
-        assert board.current_player() == 1
+        assert board.current_player == 1
 
 
 class TestDropPiece:
@@ -171,7 +171,7 @@ class TestGetAiMove:
     def test_returns_valid_column(self):
         board = Board(BOARD_1_FULL_COLUMN)
         move = board.get_ai_move()
-        assert move in board.get_valid_columns()
+        assert move in board.valid_columns
 
     def test_returns_none_on_full_board(self):
         board = Board(FULL_BOARD_WITHOUT_WINNER)

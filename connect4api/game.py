@@ -14,12 +14,18 @@ class Board:
         self.rows = len(grid)
         self.cols = len(grid[0]) if grid else 0
 
-    def get_valid_columns(self) -> list[int]:
+    @property
+    def valid_columns(self) -> list[int]:
         """
         Return the list of columns that are not full.
         A column is valid if its top cell (row 0) is empty.
         """
         return [col for col in range(self.cols) if self.grid[0][col] == 0]
+
+    @property
+    def current_player(self) -> int:
+        flat = [cell for row in self.grid for cell in row]
+        return 2 if flat.count(1) > flat.count(2) else 1
 
     def get_next_open_row(self, col: int) -> int | None:
         """
@@ -62,10 +68,6 @@ class Board:
 
         return False
 
-    def current_player(self) -> int:
-        flat = [cell for row in self.grid for cell in row]
-        return 1 if flat.count(1) == flat.count(2) else 2
-
     def drop_piece(self, col: int) -> bool:
         """
         Place a piece for the current player in the given column.
@@ -74,7 +76,7 @@ class Board:
         row = self.get_next_open_row(col)
         if row is None:
             return False
-        self.grid[row][col] = self.current_player()
+        self.grid[row][col] = self.current_player
         return True
 
     def get_ai_move(self) -> int | None:
