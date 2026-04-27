@@ -129,3 +129,38 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # Security - Cookie settings
 SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", default=not DEBUG)
 CSRF_COOKIE_SECURE = env.bool("CSRF_COOKIE_SECURE", default=not DEBUG)
+
+
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,  # never set to True
+    "formatters": {
+        "verbose": {
+            "format": "{asctime} {levelname} {module} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",  # in production : WARNING or ERROR
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": env.str("DJANGO_LOG_LEVEL", default="WARNING"),
+            "propagate": False,
+        },
+        "connect4api": {
+            "handlers": ["console"],
+            "level": env.str("CONNECT4_LOG_LEVEL", default="INFO"),
+            "propagate": False,
+        },
+    },
+}
