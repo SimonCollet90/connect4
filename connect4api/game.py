@@ -38,7 +38,7 @@ class Board:
         return [col for col in range(self.cols) if self.grid[0][col] == 0]
 
     @property
-    def next_states(self) -> dict[int, Board]:
+    def next_states(self) -> dict[int, "Board"]:
         """
         Return a dict mapping each valid column to the resulting Board after dropping a
         piece there.
